@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.memoria;
+package org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.ficheros;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,18 +12,13 @@ public class Clientes implements IClientes {
 
 	private List<Cliente> coleccionClientes;
 
-	public Clientes() {
+	private Clientes() {
 		coleccionClientes = new ArrayList<>();
 	}
 
 	@Override
 	public List<Cliente> get() {
 		return new ArrayList<>(coleccionClientes);
-	}
-
-	@Override
-	public int getCantidad() {
-		return coleccionClientes.size();
 	}
 
 	@Override

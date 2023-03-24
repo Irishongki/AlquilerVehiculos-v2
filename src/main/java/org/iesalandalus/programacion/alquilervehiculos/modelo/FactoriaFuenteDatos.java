@@ -1,15 +1,15 @@
 package org.iesalandalus.programacion.alquilervehiculos.modelo;
 
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IFuenteDatos;
-import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.memoria.FuenteDatosMemoria;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.ficheros.FuenteDatosFicheros;
 
 public enum FactoriaFuenteDatos {
-	MEMORIA{
+	FICHEROS {
 		@Override
 		public IFuenteDatos crear() {
-			return new FuenteDatosMemoria();
+			return new FuenteDatosFicheros();
 		}
 	};
-	public abstract IFuenteDatos crear() ;
-}
 
+	abstract IFuenteDatos crear();
+}

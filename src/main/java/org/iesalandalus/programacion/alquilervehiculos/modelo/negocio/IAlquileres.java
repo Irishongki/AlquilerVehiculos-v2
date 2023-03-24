@@ -19,8 +19,6 @@ public interface IAlquileres {
 	// Devolvemos una lista de los Alquileres para el turismo indicado
 	List<Alquiler> get(Vehiculo turismo);
 
-	int getCantidad();
-
 	void insertar(Alquiler alquiler) throws OperationNotSupportedException;
 
 	void devolver(Cliente cliente, LocalDate fechaDevolucion) throws OperationNotSupportedException;
