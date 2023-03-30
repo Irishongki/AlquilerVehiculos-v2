@@ -39,7 +39,7 @@ public class ModeloTest {
 	private static final String MENSAJE_ERROR_INSERTAR_ALQUILER_NULO = "ERROR: No se puede realizar un alquiler nulo.";
 	
 	@InjectMocks
-	private Modelo modelo = new ModeloCascada(IFuenteDatos.FICHEROS);
+	private Modelo modelo = new ModeloCascada(FactoriaFuenteDatos.FICHEROS);
 	
 	@Mock
 	private static IFuenteDatos fuenteDatos;

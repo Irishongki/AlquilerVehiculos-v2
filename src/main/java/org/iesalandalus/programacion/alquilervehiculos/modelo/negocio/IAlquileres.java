@@ -11,6 +11,10 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Vehiculo;
 
 public interface IAlquileres {
 
+	void comenzar();
+
+	void terminar();
+
 	List<Alquiler> get();
 
 	// Devolvemos una lista de los Alquileres para el cliente indicado

@@ -22,6 +22,9 @@ public abstract class Modelo {
 
 	protected Modelo(FactoriaFuenteDatos factoriaFuenteDatos) {
 		setFuenteDatos(factoriaFuenteDatos.crear());
+		clientes = fuenteDatos.crearClientes();
+		vehiculos = fuenteDatos.crearVehiculos();
+		alquileres = fuenteDatos.crearAlquileres();
 	}
 
 	protected IClientes getClientes() {
@@ -41,12 +44,15 @@ public abstract class Modelo {
 	}
 
 	public void comenzar() {
-		clientes = fuenteDatos.crearClientes();
-		vehiculos = fuenteDatos.crearVehiculos();
-		alquileres = fuenteDatos.crearAlquileres();
+		clientes.comenzar();
+		vehiculos.comenzar();
+		alquileres.comenzar();
 	}
 
 	public void terminar() {
+		clientes.terminar();
+		vehiculos.terminar();
+		alquileres.terminar();
 		System.out.print("El modelo ha terminado :)");
 	}
 
