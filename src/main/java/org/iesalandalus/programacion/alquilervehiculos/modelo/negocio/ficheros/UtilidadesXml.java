@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.ficheros;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.xml.XMLConstants;
@@ -19,10 +20,10 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class UtilidadesXML {
+public class UtilidadesXml {
 
-	private UtilidadesXML() {
-
+	private UtilidadesXml() {
+		// Evito que se creen instancias.
 	}
 
 	public static DocumentBuilder crearConstructorDocumentoXml() {
@@ -32,13 +33,13 @@ public class UtilidadesXML {
 			factoria.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 			constructor = factoria.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			System.out.print("Error al crear el constructor.");
+			System.out.println("Error al crear el constructor.");
 		}
 		return constructor;
 	}
 
 	public static void escribirXmlAFichero(Document documento, File salida) {
-		try {
+		try (FileWriter ficheroSalida = new FileWriter(salida)) {
 			TransformerFactory factoria = TransformerFactory.newInstance();
 			factoria.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
 			factoria.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
@@ -49,11 +50,13 @@ public class UtilidadesXML {
 			StreamResult destino = new StreamResult(salida);
 			DOMSource fuente = new DOMSource(documento);
 			conversor.transform(fuente, destino);
-			System.out.printf("Fichero %s escrito correctamente.%n", salida.getName());
+			System.out.printf("Fichero %s escrito correctamente.%n", salida);
 		} catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
-			System.out.print("Imposible crear el conversor.");
+			System.out.println("Imposible crear el conversor.");
 		} catch (TransformerException e) {
-			System.out.print("Error irecuperable en la conversión.");
+			System.out.println("Error irecuperable en la conversión.");
+		} catch (IOException e) {
+			System.out.printf("No existe el directorio de destino o no tengo permiso de escritura: %s.%n", salida);
 		}
 	}
 

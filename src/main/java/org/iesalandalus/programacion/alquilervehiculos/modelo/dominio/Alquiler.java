@@ -129,12 +129,15 @@ public class Alquiler {
 	@Override
 	public String toString() {
 		String mensaje = "Aún no devuelto";
+		String alquiler = null;
 		if (fechaDevolucion == null) {
-			return String.format("%s <---> %s, %s - %s (%d€)", cliente, vehiculo, fechaAlquiler.format(FORMATO_FECHA),
+			alquiler= String.format("%s <---> %s, %s - %s (%d€)", cliente, vehiculo, fechaAlquiler.format(FORMATO_FECHA),
 					mensaje, getPrecio());
+		} else {
+			alquiler= String.format("%s <---> %s, %s - %s (%d€)", cliente, vehiculo, fechaAlquiler.format(FORMATO_FECHA),
+					fechaDevolucion.format(FORMATO_FECHA), getPrecio());
 		}
-		return String.format("%s <---> %s, %s - %s (%d€)", cliente, vehiculo, fechaAlquiler.format(FORMATO_FECHA),
-				fechaDevolucion.format(FORMATO_FECHA), getPrecio());
+		return alquiler;
 	}
 
 }

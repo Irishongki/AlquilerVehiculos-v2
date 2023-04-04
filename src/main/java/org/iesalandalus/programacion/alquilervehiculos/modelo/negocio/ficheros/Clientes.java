@@ -38,7 +38,13 @@ public class Clientes implements IClientes {
 	}
 
 	public void comenzar() {
-		leerDom(UtilidadesXML.leerXmlDeFichero(FICHERO_CLIENTES));
+		Document documento = UtilidadesXml.leerXmlDeFichero(FICHERO_CLIENTES);
+		if(documento != null) {
+			leerDom(documento);
+			System.out.print("El documento se ha leido correctamente");
+		}else {
+			System.out.print("ERROR: El documento no se ha leido correctamente");
+		}
 	}
 
 	private void leerDom(Document documentoXml) {
@@ -48,8 +54,8 @@ public class Clientes implements IClientes {
 			if (cliente.getNodeType() == Node.ELEMENT_NODE) {
 				try {
 					insertar(getCliente((Element) cliente));
-				} catch (OperationNotSupportedException e) {
-					System.out.print(e.getMessage());
+				} catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e) {
+					System.out.printf("Error al procesar el cliente : %d --> %s%n", i, e.getMessage());
 				}
 			}
 		}
@@ -63,11 +69,11 @@ public class Clientes implements IClientes {
 	}
 
 	public void terminar() {
-		UtilidadesXML.escribirXmlAFichero(crearDom(), FICHERO_CLIENTES);
+		UtilidadesXml.escribirXmlAFichero(crearDom(), FICHERO_CLIENTES);
 	}
 
 	private Document crearDom() {
-		DocumentBuilder constructor = UtilidadesXML.crearConstructorDocumentoXml();
+		DocumentBuilder constructor = UtilidadesXml.crearConstructorDocumentoXml();
 		Document documentoXml = null;
 		if (constructor != null) {
 			documentoXml = constructor.newDocument();

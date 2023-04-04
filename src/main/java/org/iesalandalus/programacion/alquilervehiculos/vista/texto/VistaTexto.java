@@ -30,7 +30,8 @@ public class VistaTexto extends Vista {
 	}
 
 	public void terminar() {
-		System.out.print("Adioss!!");
+		System.out.printf("Adioss!!%n");
+		getControlador().terminar();
 		System.exit(0);
 	}
 
@@ -243,12 +244,10 @@ public class VistaTexto extends Vista {
 	private Map<TipoVehiculo, Integer> inicializarEstadisticas() {
 		Map<TipoVehiculo, Integer> ocurrencias = new EnumMap<>(TipoVehiculo.class);
 
-		ocurrencias.put(TipoVehiculo.TURISMO, 0);
-		ocurrencias.put(TipoVehiculo.AUTOBUS, 0);
-		ocurrencias.put(TipoVehiculo.FURGONETA, 0);
-
+		for (TipoVehiculo tipoVehiculo : TipoVehiculo.values()) {
+			ocurrencias.put(tipoVehiculo, 0);
+		}
 		return ocurrencias;
-
 	}
 
 }

@@ -40,6 +40,9 @@ public abstract class Modelo {
 	}
 
 	protected void setFuenteDatos(IFuenteDatos fuenteDatos) {
+		if (fuenteDatos == null) {
+			throw new NullPointerException("La fuente de Datos no puede ser nula");
+		}
 		this.fuenteDatos = fuenteDatos;
 	}
 

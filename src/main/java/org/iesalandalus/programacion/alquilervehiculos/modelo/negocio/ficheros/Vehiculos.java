@@ -49,7 +49,13 @@ public class Vehiculos implements IVehiculos {
 	}
 
 	public void comenzar() {
-		leerDom(UtilidadesXML.leerXmlDeFichero(FICHERO_VEHICULOS));
+		Document documento = UtilidadesXml.leerXmlDeFichero(FICHERO_VEHICULOS);
+		if(documento != null) {
+			leerDom(documento);
+			System.out.print("El documento se ha leido correctamente");
+		}else {
+			System.out.print("ERROR: El documento no se ha leido correctamente");
+		}
 	}
 
 	private void leerDom(Document documentoXml) {
@@ -59,8 +65,9 @@ public class Vehiculos implements IVehiculos {
 			if (vehiculo.getNodeType() == Node.ELEMENT_NODE) {
 				try {
 					insertar(getVehiculo((Element) vehiculo));
-				} catch (OperationNotSupportedException e) {
-					System.out.print(e.getMessage());
+				} catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e) {
+					System.out.printf("Error al procesar el vehiculo : %d --> %s%n", i, e.getMessage());
+					
 				}
 			}
 		}
@@ -87,11 +94,11 @@ public class Vehiculos implements IVehiculos {
 	}
 
 	public void terminar() {
-		UtilidadesXML.escribirXmlAFichero(crearDom(), FICHERO_VEHICULOS);
+		UtilidadesXml.escribirXmlAFichero(crearDom(), FICHERO_VEHICULOS);
 	}
 
 	private Document crearDom() {
-		DocumentBuilder constructor = UtilidadesXML.crearConstructorDocumentoXml();
+		DocumentBuilder constructor = UtilidadesXml.crearConstructorDocumentoXml();
 		Document documentoXml = null;
 		if (constructor != null) {
 			documentoXml = constructor.newDocument();

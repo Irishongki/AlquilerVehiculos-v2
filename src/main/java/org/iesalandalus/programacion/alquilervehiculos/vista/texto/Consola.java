@@ -106,8 +106,11 @@ public class Consola {
 	}
 
 	private static void mostrarMenuTiposVehiculos() {
-		mostrarCabecera("Los Tipos de Vehiculos que hay son: ");
-		System.out.printf("%n 0-%s%n 1-%s%n 2-%s%n", TipoVehiculo.TURISMO, TipoVehiculo.AUTOBUS, TipoVehiculo.FURGONETA);
+		mostrarCabecera("Los Tipos de Vehiculos que hay son : ");
+		System.out.printf("%n");
+		for (TipoVehiculo tipoVehiculo : TipoVehiculo.values()) {
+			System.out.printf("%d-%s%n",  tipoVehiculo.ordinal(), tipoVehiculo);
+		}
 	}
 
 	private static TipoVehiculo elegirTipoVehiculo() {

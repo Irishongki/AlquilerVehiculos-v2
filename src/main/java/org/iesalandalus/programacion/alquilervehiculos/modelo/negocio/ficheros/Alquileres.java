@@ -45,7 +45,13 @@ public class Alquileres implements IAlquileres {
 	}
 
 	public void comenzar() {
-		leerDom(UtilidadesXML.leerXmlDeFichero(FICHERO_ALQUILERES));
+		Document documento = UtilidadesXml.leerXmlDeFichero(FICHERO_ALQUILERES);
+		if (documento != null) {
+			leerDom(documento);
+			System.out.print("El documento se ha leido correctamente");
+		} else {
+			System.out.print("ERROR: El documento no se ha leido correctamente");
+		}
 	}
 
 	private void leerDom(Document documentoXml) {
@@ -55,8 +61,8 @@ public class Alquileres implements IAlquileres {
 			if (alquiler.getNodeType() == Node.ELEMENT_NODE) {
 				try {
 					insertar(getAlquiler((Element) alquiler));
-				} catch (OperationNotSupportedException e) {
-					System.out.print(e.getMessage());
+				} catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e) {
+					System.out.printf("Error al procesar el alquiler : %d --> %s%n", i, e.getMessage());
 				}
 			}
 		}
@@ -68,11 +74,19 @@ public class Alquileres implements IAlquileres {
 		Vehiculo vehiculo = null;
 		String dni = elemento.getAttribute(CLIENTE);
 		cliente = Cliente.getClienteConDni(dni);
-		cliente = Clientes.getInstancia().buscar(cliente);
+		try {
+			cliente = Clientes.getInstancia().buscar(cliente);
+		} catch (NullPointerException e) {
+			System.out.print(e.getMessage());
+		}
 		String fechaAlquiler = elemento.getAttribute(FECHA_ALQUILER);
 		String matricula = elemento.getAttribute(VEHICULO);
 		vehiculo = Vehiculo.getVehiculoConMatricula(matricula);
-		vehiculo = Vehiculos.getInstancia().buscar(vehiculo);
+		try {
+			vehiculo = Vehiculos.getInstancia().buscar(vehiculo);
+		} catch (NullPointerException e) {
+			System.out.print(e.getMessage());
+		}
 		alquiler = new Alquiler(cliente, vehiculo, LocalDate.parse(fechaAlquiler, FORMATO_FECHA));
 
 		if (elemento.hasAttribute(FECHA_DEVOLUCION)) {
@@ -83,11 +97,11 @@ public class Alquileres implements IAlquileres {
 	}
 
 	public void terminar() {
-		UtilidadesXML.escribirXmlAFichero(crearDom(), FICHERO_ALQUILERES);
+		UtilidadesXml.escribirXmlAFichero(crearDom(), FICHERO_ALQUILERES);
 	}
 
 	private Document crearDom() {
-		DocumentBuilder constructor = UtilidadesXML.crearConstructorDocumentoXml();
+		DocumentBuilder constructor = UtilidadesXml.crearConstructorDocumentoXml();
 		Document documentoXml = null;
 		if (constructor != null) {
 			documentoXml = constructor.newDocument();
@@ -178,7 +192,7 @@ public class Alquileres implements IAlquileres {
 		if (alquilerEncontrado == null) {
 			throw new OperationNotSupportedException("ERROR: No existe ningún alquiler abierto para ese cliente.");
 		}
-		coleccionAlquileres.get(coleccionAlquileres.indexOf(alquilerEncontrado)).devolver(fechaDevolucion);
+		alquilerEncontrado.devolver(fechaDevolucion);
 	}
 
 	private Alquiler getAlquilerAbierto(Cliente cliente) {
@@ -199,10 +213,10 @@ public class Alquileres implements IAlquileres {
 		if (vehiculo == null) {
 			throw new NullPointerException("ERROR: No se puede devolver un alquiler de un vehículo nulo.");
 		}
-		if (getAlquilerAbierto(vehiculo) == null) {
+		if (alquilerEncontrado == null) {
 			throw new OperationNotSupportedException("ERROR: No existe ningún alquiler abierto para ese vehículo.");
 		}
-		coleccionAlquileres.get(coleccionAlquileres.indexOf(alquilerEncontrado)).devolver(fechaDevolucion);
+		alquilerEncontrado.devolver(fechaDevolucion);
 	}
 
 	private Alquiler getAlquilerAbierto(Vehiculo vehiculo) {
